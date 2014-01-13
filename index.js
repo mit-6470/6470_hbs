@@ -1,7 +1,10 @@
 $(document).ready(function() {
+
 	var messagesTemplate = Handlebars.compile($('#msg-block-template').html());
+	var singleMessageTemplate = Handlebars.compile($('#msg-template').html());
 	Handlebars.registerPartial('message', $('#msg-template').html());
 
+	// Populate the list of messages after page load, with AJAX and Handlebars :)
 	$.get('get-messages.php', function(data) {
 		$('#messages').html(messagesTemplate({'messages': data}));
 	}, 'json');
@@ -18,8 +21,11 @@ $(document).ready(function() {
 			// Note that because we specify 'json', jQuery will automatically parse the response
 			// and the argument 'data' becomes a Javascript object instead of a simple string
 			if (data.success) {
-				var item = $('<li />').html('<span class="name">' + data.name + '</span>: ' + data.message + '</li>');
-				$('#messages').prepend(item);
+				$('#name').val('');
+				$('#new-msg').val('');
+
+				// It's so easy now!
+				$('#messages').prepend(singleMessageTemplate(data));
 			}
 		}, 'json');
 	});
