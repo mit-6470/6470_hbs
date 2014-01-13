@@ -1,4 +1,11 @@
 $(document).ready(function() {
+	var messagesTemplate = Handlebars.compile($('#msg-block-template').html());
+	Handlebars.registerPartial('message', $('#msg-template').html());
+
+	$.get('get-messages.php', function(data) {
+		$('#messages').html(messagesTemplate({'messages': data}));
+	}, 'json');
+
 	$('#submit').click(function() {
 		var name = $('#name').val();
 		var message = $('#new-msg').val();
